@@ -1,5 +1,6 @@
 {% set allowed_ip_elastic = salt['pillar.get']('elasticsearch:allowedip', '') %}
 
+{# First we need to add the key/repo for elasticsearch, before we install #}
 add-elasticsearch-repo-key:
   cmd.run:
     - name: wget -qO - https://packages.elastic.co/GPG-KEY-elasticsearch | apt-key add -
@@ -17,11 +18,13 @@ install-elasticsearch:
     - require: 
       - pkgrepo: add-elasticsearch-repo
 
+{# Below we are only allowing certain ip's to elasticsearch.#}
+{# In this case we are only allowing localhost, because we will later use nginx to forward traffic #}
 allowed_ip_elasticsearch:
   file.append:
     - name: /etc/elasticsearch/elasticsearch.yml
     - text: |
-        network_host: {{ allowed_ip_elastic }}
+        network.host: {{ allowed_ip_elastic }}
 
 elasticsearch-service:
   service.running:
