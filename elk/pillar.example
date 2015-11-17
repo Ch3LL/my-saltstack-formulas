@@ -1,0 +1,13 @@
+elasticsearch:
+  allowedip: localhost
+
+kibana:
+  allowedip: localhost
+
+nginx:
+  htpasswd: Sup3rS3cretPassword
+  kibana_admin: kibanadmin
+  server_name: example.com
+
+logstash:
+  public_ip: 1.1.1.1
